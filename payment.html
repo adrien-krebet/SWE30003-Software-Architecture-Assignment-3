@@ -6,7 +6,6 @@
  <meta name="keywords" content="PHP" />
  <meta name="author" content="Joel Downie" />
  <title>Payment Menu Test</title>
- <link href= "styles/styles.css" rel="stylesheet"/><!-- Link to CSS file -->
 </head>
 
 <body>
@@ -16,15 +15,43 @@
         <a href="payment.html">Temp way to payment:</a>
         <a href="cavehorse.html">CAVEHORSECAVEHORSECAVEHORSE:</a>
     </header>
-    <section class="background_sheet"><!-- this class is used to create the background page like style in the css folder -->
+    <section class="background_sheet">
         <h1>Payment Page</h1>
         <p>Please give us your money.</p>
         <form action = "payment.php" method = "post" >
             <fieldset>
                 <legend>Payment field:</legend>
-                <p>Card:</p>
+                <p>Card number:</p>
                 <p>
-                    <input type="text" name= "email" id="email" value="Money"/> <!-- preset field with value https://www.w3schools.com/tags/att_input_value.asp  -->
+                    <input type="text" name= "card" id="card" value="Money"/>
+                </p>
+                <p>Expiery date:</p>
+                <p>
+                    <input type="text" name= "pword" id="pword"/>
+                </p>
+                <p>
+                    <input id="submit" class="inputButtons" type= "submit" value="Log in"/> <input class="inputButtons" type= "reset" value="Clear"/>
+                </p>
+                <p>CSV:</p>
+                <p>
+                    <input type="text" name= "pword" id="pword"/>
+                </p>
+                <p>
+                    <input id="submit" class="inputButtons" type= "submit" value="Log in"/> <input class="inputButtons" type= "reset" value="Clear"/>
+                </p>
+                <p>Password:</p>
+                <p>
+                    <input type="text" name= "pword" id="pword"/>
+                </p>
+                <p>
+                    <input id="submit" class="inputButtons" type= "submit" value="Log in"/> <input class="inputButtons" type= "reset" value="Clear"/>
+                </p>
+                <p>Password:</p>
+                <p>
+                    <input type="text" name= "pword" id="pword"/>
+                </p>
+                <p>
+                    <input id="submit" class="inputButtons" type= "submit" value="Log in"/> <input class="inputButtons" type= "reset" value="Clear"/>
                 </p>
                 <p>Password:</p>
                 <p>
