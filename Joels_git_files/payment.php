@@ -153,6 +153,7 @@
 
             echo "<h1>Order time</h1>";
             include 'order.php';
+            $account = $cart->get_acount_id();
             $payment_status = true;//used to simulate if the payment has gone through or not
             $collection_method = $payment->get_collection_method();
             $contact_details = $payment->get_contact_details();
@@ -169,25 +170,28 @@
             //check payment success
             $verification_check = $order->veryify_data($payment_status);
             if ($verification_check == "") {
-            $order->set_order_account_id(5);//will be from the acount session i asume for now hard coded
-            $order->set_order_items($cart);
-            $order->set_order_collection_method($collection_method);
-            $order->set_order_contact_details($contact_details);//will be from the acount session i asume for now hard coded
-            $order->set_order_address($shipping_address);
-            $order->set_order_postcode($postcode);
-            //temp display for testing
-            echo "Order acount ID: " . $order->get_order_account_id();
-            echo "<br>";
-            var_dump($order->get_order_items());
-            echo "<br>";
-            echo "Order collection method: " . $order->get_order_collection_method();
-            echo "<br>";
-            echo "Order Contact details: " . $order->get_order_contact_details();
-            echo "<br>";
-            echo "Order address: " . $order->get_order_address();
-            echo "<br>";
-            echo "Order postcode: " . $order->get_order_postcode();
-            echo "<br>";
+                $order->set_order_account_id($account);//will be from the acount session i asume for now hard coded
+                $order->set_order_items($cart);
+                $order->set_order_collection_method($collection_method);
+                $order->set_order_contact_details($contact_details);//will be from the acount session i asume for now hard coded
+                $order->set_order_address($shipping_address);
+                $order->set_order_postcode($postcode);
+                //temp display for testing
+                echo "Order acount ID: " . $order->get_order_account_id();
+                echo "<br>";
+                var_dump($order->get_order_items());
+                echo "<br>";
+                echo "Order collection method: " . $order->get_order_collection_method();
+                echo "<br>";
+                echo "Order Contact details: " . $order->get_order_contact_details();
+                echo "<br>";
+                echo "Order address: " . $order->get_order_address();
+                echo "<br>";
+                echo "Order postcode: " . $order->get_order_postcode();
+                echo "<br>";
+
+                echo "<h1>Final confirmation</h1>";
+                $order->create_order($order);
             }
             else {
                 echo "<p>Verification status: " . $verification_check . "</p>";

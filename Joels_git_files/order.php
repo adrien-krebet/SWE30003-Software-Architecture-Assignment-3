@@ -1,5 +1,6 @@
 <?php
     //sequence check will have already been called in
+    //https://stackoverflow.com/questions/7895335/append-data-to-a-json-file-with-php
     class Order extends Sequence_check {
         public $order_account_id;
         public $order_collection_method;
@@ -53,8 +54,25 @@
         function get_order_postcode() {
             return $this->order_postcode;
         }
-        function create_order(){
-            $i = 1;
+        function send_email($email_address) {//very simplified function to simulate sending an email
+            $result = "Your order has been complete. an email has been sent to $email_address ";
+            return $result;
+        }
+        function create_order($order){//maybe remove CART AND PAYMENT OBJECTS HERE?????????????????????????????
+            var_dump($order);
+
+
+            $data[] = "test";
+            $inp = file_get_contents('order_record.json');
+            $tempArray = json_decode($inp);
+            array_push($tempArray, $data);
+            $jsonData = json_encode($data);
+            file_put_contents('order_record.json', $jsonData);
+
+
+            $email = $order->get_order_contact_details();
+            $email_confirmation = $order->send_email($email);
+            echo "<p>$email_confirmation confirming your details</p>";//final display message if all goes well
         }
     }
 ?>
