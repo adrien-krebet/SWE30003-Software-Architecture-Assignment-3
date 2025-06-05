@@ -1,14 +1,6 @@
 <!DOCTYPE html>
 <html>
 <body>
-    <header>
-        <h1>Assignment 3 view cart example</h1>
-        <a href="index.html">Home Page:</a>
-        <a href="payment.html">Temp way to payment:</a>
-        <a href="cavehorse.html">CAVEHORSECAVEHORSECAVEHORSE:</a>
-        <a href="payment_class.php">payment_class:</a>
-        <a href="cart_class.php">cart_class:</a>
-    </header>
     <h1>Cart test</h1>
     <?php
         //https://www.w3schools.com/php/php_oop_classes_objects.asp
@@ -16,6 +8,7 @@
         //https://www.geeksforgeeks.org/php/how-to-parse-a-json-file-in-php/
         //https://www.w3schools.com/php/php_json.asp
         //https://stackoverflow.com/questions/42233076/get-specific-object-from-specific-id-json
+        include 'sequence_check.php';
         class Item {
             // Properties
             public $item_id;
