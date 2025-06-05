@@ -127,11 +127,15 @@
 
         class Cart {
             // Properties
+            public $acount_id;
             public $products = [];
             public $invoice;
 
 
             // Methods
+            function add_acount_id($acount_id) {
+                $this->acount_id = $acount_id;
+            }
             function add_products($product_id, $quantity, $products_list) {
                 foreach ($products_list as $item) {
                     $item_id = $item->get_item_id();
@@ -157,6 +161,9 @@
             function get_products() {
                 return $this->products;
             }
+            function get_acount_id() {
+                return $this->acount_id;
+            }
             function get_invoice() {
                 return $this->invoice;
             }
@@ -166,11 +173,14 @@
         }
 
         $cart = new Cart();
+        $cart->add_acount_id(5);//temporarily hard coded
         $cart->add_products(1, 3, $products_list);
         $cart->add_products(2, 5, $products_list);
         $cart_list = $cart->get_products();
         $cart->calculate_invoice($cart_list);//has to come last
         //var_dump($cart_list);
+        echo "Account ID: " . $cart->get_acount_id();
+        echo "<br>";
         foreach ($cart_list as $item) {
             echo "Item ID: " . $item->get_item_id() . "   <br>";
             echo "Item names: " . $item->get_item_name() . "   <br>";
