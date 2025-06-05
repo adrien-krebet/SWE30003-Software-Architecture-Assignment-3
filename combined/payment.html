@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <meta charset="utf-8" />
+ <meta name="description" content="SWE30003-Software Architectures and Design Assignment 3 " />
+ <meta name="keywords" content="PHP" />
+ <meta name="author" content="Joel Downie" />
+ <title>Payment Menu Test</title>
+</head>
+
+<body>
+    <nav>
+        
+        <a href="index.html">Home Page:</a>
+        <a href="payment.html">Temp way to payment:</a>
+        <a href="cavehorse.html">CAVEHORSECAVEHORSECAVEHORSE:</a>
+    </nav>
+    <h1>Assignment 3 Payment form</h1>
+    <section class="background_sheet">
+        <h1>Payment Page</h1>
+        <p>Please give us your money.</p>
+        <form action = "payment.php" method = "post" >
+            <fieldset>
+                <legend>Payment field:</legend>
+                <p>Card number:</p>
+                <p>
+                    <input type="text" name= "card" id="card"/>
+                </p>
+                <p>Card expiery date:</p>
+                <p>
+                    <input type="text" name= "expiery_date" id="expiery_date"/>
+                </p>
+                <p>CSV:</p>
+                <p>
+                    <input type="text" name= "CSV" id="CSV"/>
+                </p>
+                <p>Collection method</p>
+                <p>
+                    <input type="radio" id="c1" name="collection_method" value="in_store_collection"> <label for="c1">In store pickup</label>
+                    <input type="radio" id="c2" name="collection_method" value="delivery"> <label for="c2">Delivery</label>
+                </p>
+                <p>Your address:</p>
+                <p>
+                    <input type="text" name= "address" id="address"/>
+                </p>
+                <p>Your postcode:</p>
+                <p>
+                    <input type="text" name= "postcode" id="postcode"/>
+                </p>
+                <p>
+                    <input id="submit" class="inputButtons" type= "submit" value="Submit payment"/> <input class="inputButtons" type= "reset" value="Clear"/>
+                </p>
+            </fieldset>
+        </form>
+    </section>
+</body>
+</html>
