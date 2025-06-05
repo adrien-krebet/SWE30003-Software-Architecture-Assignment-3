@@ -2,12 +2,12 @@
 <html>
 <body>
     <header>
-        <h1>Assignment 3 view cart example</h1>
+        <!--<h1>Assignment 3 view cart example</h1>
         <a href="index.html">Home Page:</a>
         <a href="payment.html">Temp way to payment:</a>
         <a href="cavehorse.html">CAVEHORSECAVEHORSECAVEHORSE:</a>
         <a href="payment_class.php">payment_class:</a>
-        <a href="cart_class.php">cart_class:</a>
+        <a href="cart_class.php">cart_class:</a>-->
     </header>
     <h1>Cart test</h1>
     <?php
@@ -78,59 +78,12 @@
                 return $this->item_catagory;
             }
         }
-        $json = file_get_contents('stock_record.JSON');
-        // Check if the file was read successfully
-        if ($json === false) {
-            die('Error reading the JSON file');
-        }
-
-        // Decode the JSON file
-        $json_data = json_decode($json, true);
-
-        // Check if the JSON was decoded successfully
-        if ($json_data === null) {
-            die('Error decoding the JSON file');
-        }
-
-        // Display data
-        echo "<pre>";
-        //print_r($json_data);
-        echo "</pre>";
-        $products_list = [];
-        foreach ($json_data as $key => $value) {
-            $new_item = new Item();
-            $new_item->add_item_id($value['id']);
-            $new_item->add_item_name($value['name']);
-            $new_item->add_item_remaining_quantity($value['remaining_quantity']);
-            $new_item->add_item_price($value['price']);
-            $new_item->add_item_purchase_quantity(0); // default purchase quantity
-            $new_item->add_item_long_desc($value['long_desc']);
-            $new_item->add_item_short_desc($value['short_desc']);
-            $new_item->add_item_catagory($value['catagory']);
-            $products_list[] = $new_item;
-        }
-        //var_dump($products_list);
-        echo "<br>";
-        //Display of each item stored in the product list
-        /*
-        foreach ($products_list as $item) {
-            echo "Item ID: " . $item->get_item_id() . "   <br>";
-            echo "Item names: " . $item->get_item_name() . "   <br>";
-            echo "Item remaining quantaty: " . $item->get_item_remaining_quantity() . "   <br>";
-            echo "Item price: " . $item->get_item_price() . "   <br>";
-            echo "Item purchas quantaty: " . $item->get_item_purchase_quantity() . "   <br>";
-            echo "Item long description: " . $item->get_item_long_desc() . "   <br>";
-            echo "Item short description: " . $item->get_item_short_desc() . "   <br>";
-            echo "Item catagory: " . $item->get_item_catagory() . "   <br>";
-        }
-        */
 
         class Cart {
             // Properties
             public $account_id;
             public $products = [];
             public $invoice;
-
 
             // Methods
             function add_account_id($account_id) {
@@ -172,28 +125,68 @@
             }
         }
 
-        $cart = new Cart();
-        $cart->add_account_id(5);//temporarily hard coded
-        $cart->add_products(1, 3, $products_list);
-        $cart->add_products(2, 5, $products_list);
-        $cart_list = $cart->get_products();
-        $cart->calculate_invoice($cart_list);//has to come last
-        //var_dump($cart_list);
-        echo "Account ID: " . $cart->get_account_id();
-        echo "<br>";
-        foreach ($cart_list as $item) {
-            echo "Item ID: " . $item->get_item_id() . "   <br>";
-            echo "Item names: " . $item->get_item_name() . "   <br>";
-            echo "Item remaining quantaty: " . $item->get_item_remaining_quantity() . "   <br>";
-            echo "Item price: " . $item->get_item_price() . "   <br>";
-            echo "Item purchas quantaty: " . $item->get_item_purchase_quantity() . "   <br>";
-            echo "Item long description: " . $item->get_item_long_desc() . "   <br>";
-            echo "Item short description: " . $item->get_item_short_desc() . "   <br>";
-            echo "Item catagory: " . $item->get_item_catagory() . "   <br>";
+        // stops it from printing stuff
+        // legit just checks whether the file being called by server and if the current file are the same 
+        // so if they are then it runs the html part of the code
+        if (basename(__FILE__) == basename($_SERVER['SCRIPT_FILENAME'])) {
+
+            $json = file_get_contents('stock_record.JSON');
+            if ($json === false) {
+                die('Error reading the JSON file');
+            }
+
+            $json_data = json_decode($json, true);
+            if ($json_data === null) {
+                die('Error decoding the JSON file');
+            }
+
+            $products_list = [];
+            foreach ($json_data as $key => $value) {
+                $new_item = new Item();
+                $new_item->add_item_id($value['id']);
+                $new_item->add_item_name($value['name']);
+                $new_item->add_item_remaining_quantity($value['remaining_quantity']);
+                $new_item->add_item_price($value['price']);
+                $new_item->add_item_purchase_quantity(0);
+                $new_item->add_item_long_desc($value['long_desc']);
+                $new_item->add_item_short_desc($value['short_desc']);
+                $new_item->add_item_catagory($value['catagory']);
+                $products_list[] = $new_item;
+            }
+
+            // Setup cart and add items
+            $cart = new Cart();
+            $cart->add_account_id(5);
+            $cart->add_products(1, 3, $products_list);
+            $cart->add_products(2, 5, $products_list);
+            $cart_list = $cart->get_products();
+            $cart->calculate_invoice($cart_list);
+
+            // Print output
+            echo "<!DOCTYPE html><html><body>";
+            echo "<header><h1>Assignment 3 view cart example</h1>
+                    <a href=\"index.html\">Home Page:</a>
+                    <a href=\"payment.html\">Temp way to payment:</a>
+                    <a href=\"cavehorse.html\">CAVEHORSECAVEHORSECAVEHORSE:</a>
+                    <a href=\"payment_class.php\">payment_class:</a>
+                    <a href=\"cart_class.php\">cart_class:</a>
+                  </header>";
+            echo "<h1>Cart test</h1>";
+
+            echo "Account ID: " . $cart->get_account_id() . "<br>";
+            foreach ($cart_list as $item) {
+                echo "Item ID: " . $item->get_item_id() . "<br>";
+                echo "Item names: " . $item->get_item_name() . "<br>";
+                echo "Item remaining quantaty: " . $item->get_item_remaining_quantity() . "<br>";
+                echo "Item price: " . $item->get_item_price() . "<br>";
+                echo "Item purchas quantaty: " . $item->get_item_purchase_quantity() . "<br>";
+                echo "Item long description: " . $item->get_item_long_desc() . "<br>";
+                echo "Item short description: " . $item->get_item_short_desc() . "<br>";
+                echo "Item catagory: " . $item->get_item_catagory() . "<br>";
+            }
+            echo "<br>Invoice: " . $cart->get_invoice();
+            echo "</body></html>";
         }
-        echo "<br>";
-        echo "Invoice: " . $cart->get_invoice();
-        echo "<br>";
     ?>
 </body>
 </html>
