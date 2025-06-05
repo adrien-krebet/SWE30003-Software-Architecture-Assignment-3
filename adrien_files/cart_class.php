@@ -9,7 +9,6 @@
         <a href="payment_class.php">payment_class:</a>
         <a href="cart_class.php">cart_class:</a>-->
     </header>
-    <h1>Cart test</h1>
     <?php
         //https://www.w3schools.com/php/php_oop_classes_objects.asp
         //https://www.w3schools.com/js/js_json_datatypes.asp
@@ -80,113 +79,59 @@
         }
 
         class Cart {
-            // Properties
-            public $account_id;
-            public $products = [];
-            public $invoice;
+        public $account_id;
+        public $products = [];
+        public $invoice = 0;
 
-            // Methods
-            function add_account_id($account_id) {
-                $this->account_id = $account_id;
-            }
-            function add_products($product_id, $quantity, $products_list) {
-                foreach ($products_list as $item) {
-                    $item_id = $item->get_item_id();
-                    if ($item_id == $product_id) {
-                        $item->add_item_purchase_quantity($quantity);
-                        $this->products[] = $item;
-                    }
+        function add_account_id($id) {
+            $this->account_id = $id;
+        }
+
+        function add_products($product_id, $quantity, $products_list) {
+            foreach ($products_list as $item) {
+                if ($item->get_item_id() == $product_id) {
+                    $item->add_item_purchase_quantity($quantity);
+                    $this->products[] = $item;
+                    return; // stop after adding the matching product
                 }
-            }
-            function calculate_invoice($cart_list) {
-                $invoice = 0;
-                $total_cost = 0;
-                foreach ($cart_list as $item) {
-                    $item_name = $item->get_item_name();
-                    $item_price = $item->get_item_price();
-                    $item_quantity = $item->get_item_purchase_quantity();
-                    $total_cost = ($total_cost + ($item_price * $item_quantity));
-                }
-                $invoice = $total_cost;
-                $this->invoice = $invoice;
-            }
-            //Just for testing will remove later as these individual values do not need returns
-            function get_products() {
-                return $this->products;
-            }
-            function get_account_id() {
-                return $this->account_id;
-            }
-            function get_invoice() {
-                return $this->invoice;
-            }
-            function remove_products() {
-                //will try and create a way to remove particular products
             }
         }
 
-        // stops it from printing stuff
-        // legit just checks whether the file being called by server and if the current file are the same 
-        // so if they are then it runs the html part of the code
-        if (basename(__FILE__) == basename($_SERVER['SCRIPT_FILENAME'])) {
-
-            $json = file_get_contents('stock_record.JSON');
-            if ($json === false) {
-                die('Error reading the JSON file');
-            }
-
-            $json_data = json_decode($json, true);
-            if ($json_data === null) {
-                die('Error decoding the JSON file');
-            }
-
-            $products_list = [];
-            foreach ($json_data as $key => $value) {
-                $new_item = new Item();
-                $new_item->add_item_id($value['id']);
-                $new_item->add_item_name($value['name']);
-                $new_item->add_item_remaining_quantity($value['remaining_quantity']);
-                $new_item->add_item_price($value['price']);
-                $new_item->add_item_purchase_quantity(0);
-                $new_item->add_item_long_desc($value['long_desc']);
-                $new_item->add_item_short_desc($value['short_desc']);
-                $new_item->add_item_catagory($value['catagory']);
-                $products_list[] = $new_item;
-            }
-
-            // Setup cart and add items
-            $cart = new Cart();
-            $cart->add_account_id(5);
-            $cart->add_products(1, 3, $products_list);
-            $cart->add_products(2, 5, $products_list);
-            $cart_list = $cart->get_products();
-            $cart->calculate_invoice($cart_list);
-
-            // Print output
-            echo "<!DOCTYPE html><html><body>";
-            echo "<header><h1>Assignment 3 view cart example</h1>
-                    <a href=\"index.html\">Home Page:</a>
-                    <a href=\"payment.html\">Temp way to payment:</a>
-                    <a href=\"cavehorse.html\">CAVEHORSECAVEHORSECAVEHORSE:</a>
-                    <a href=\"payment_class.php\">payment_class:</a>
-                    <a href=\"cart_class.php\">cart_class:</a>
-                  </header>";
-            echo "<h1>Cart test</h1>";
-
-            echo "Account ID: " . $cart->get_account_id() . "<br>";
+        function calculate_invoice($cart_list) {
+            $total = 0;
             foreach ($cart_list as $item) {
-                echo "Item ID: " . $item->get_item_id() . "<br>";
-                echo "Item names: " . $item->get_item_name() . "<br>";
-                echo "Item remaining quantaty: " . $item->get_item_remaining_quantity() . "<br>";
-                echo "Item price: " . $item->get_item_price() . "<br>";
-                echo "Item purchas quantaty: " . $item->get_item_purchase_quantity() . "<br>";
-                echo "Item long description: " . $item->get_item_long_desc() . "<br>";
-                echo "Item short description: " . $item->get_item_short_desc() . "<br>";
-                echo "Item catagory: " . $item->get_item_catagory() . "<br>";
+                $total += $item->get_item_price() * $item->get_item_purchase_quantity();
             }
-            echo "<br>Invoice: " . $cart->get_invoice();
-            echo "</body></html>";
+            $this->invoice = $total;
         }
+
+        function get_products() {
+            return $this->products;
+        }
+
+        function get_account_id() {
+            return $this->account_id;
+        }
+
+        function get_invoice() {
+            return $this->invoice;
+        }
+
+        function remove_products($product_id) {
+            foreach ($this->products as $i => $item) {
+                if ($item->get_item_id() == $product_id) {
+                    unset($this->products[$i]);
+                }
+            }
+            $this->products = array_values($this->products); // reindex
+        }
+
+        function remove_all_products() {
+            $this->products = [];
+            $this->invoice = 0;
+        }
+        // i just removed the print stuff cos it printed from the record but i have a backup
+    }
     ?>
 </body>
 </html>

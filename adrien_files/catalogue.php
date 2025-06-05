@@ -5,8 +5,10 @@
         <h1>Assignment 3 Catalogue</h1>
         <a href="index.html">Home Page:</a>
         <a href="payment.html">Temp way to payment:</a>
-        <a href="cavehorse.html">CAVEHORSECAVEHORSECAVEHORSE:</a>
-        <a href="payment_class.php">payment_class:</a>
+        <!--<a href="cavehorse.html">CAVEHORSECAVEHORSECAVEHORSE:</a>
+        <a href="payment_class.php">payment_class:</a>-->
+        <a href="adrien_files/catalogue.php">Catalogue stuff:</a>
+        <a href="view_cart.php">View Cart</a>
     </header>
     <?php
         //echo "Catalogue page found!";

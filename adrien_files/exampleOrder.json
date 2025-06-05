@@ -17,6 +17,15 @@
         { "name": "adapters", "quantity": "100" },
         { "name": "tv", "quantity": "100000" }
       ]
-    }
+    },
+    {
+      "orderID": "0003",
+      "userID": "0001",
+      "orderStatus": "Complete",
+      "items": [
+        { "name": "airpods", "quantity": "200" },
+        { "name": "monitor", "quantity": "500" }
+      ]
+    },
   ]
 }
