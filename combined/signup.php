@@ -15,6 +15,7 @@
             <a href="signup.php">signup:</a>
         </nav>
         <?php
+            session_start();
             include 'account.php';
             echo "<h1>Signup</h1>";
         ?>
