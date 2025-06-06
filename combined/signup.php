@@ -59,6 +59,7 @@
 			}
 
 			$data = [];
+            $check = true;
 			foreach ($acc_data["accounts"] as $id) {
 				if ($id["email"] == $email) {
                     echo "<p>$email already exists and can not be used.</p>";
@@ -68,7 +69,7 @@
                     $check = true;
                 }
 			}
-            if ($check == true) {
+            if (($check == true) and $email != "") {
                 $file = 'accountinfo.json';
                 $json = json_decode(file_get_contents($file), true) ?? ['accounts' => []];
 
@@ -97,7 +98,7 @@
                 $account_info->set_email($email);
                 $account_info->set_password($password);
                 $account_info->set_type($access_level);
-                $account_info->create_account_session($account_id);
+                $account_info->create_account_session($account_id, $access_level);
 
 
                 //asign vairables to account class and then create accountid session
