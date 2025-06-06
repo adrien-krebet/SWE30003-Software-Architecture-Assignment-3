@@ -270,6 +270,42 @@
                     "quantity": "1"
                 }
             ]
+        },
+        {
+            "orderID": "0018",
+            "userID": 1,
+            "orderStatus": "Being Processed",
+            "collectionMethod": "delivery",
+            "address": "78 cool street vic",
+            "postcode": "3876",
+            "items": [
+                {
+                    "name": "monitor",
+                    "quantity": "2"
+                }
+            ]
+        },
+        {
+            "orderID": "0019",
+            "userID": 1,
+            "orderStatus": "Being Processed",
+            "collectionMethod": "in_store_collection",
+            "address": "NA",
+            "postcode": "NA",
+            "items": [
+                {
+                    "name": "usb",
+                    "quantity": "3"
+                },
+                {
+                    "name": "headphones",
+                    "quantity": "1"
+                },
+                {
+                    "name": "usb",
+                    "quantity": "2"
+                }
+            ]
         }
     ]
 }

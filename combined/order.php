@@ -85,9 +85,6 @@
             $newJsonString = json_encode($data);
             file_put_contents('stock_record.json', $newJsonString);
 
-
-
-
             $file = 'order_record.json';
             $json = json_decode(file_get_contents($file), true) ?? ['orders' => []];
 
@@ -101,6 +98,7 @@
                 'userID' => $this->get_order_account_id(),
                 // change this between whatever
                 'orderStatus' => "Being Processed",
+                'collectionMethod' => $this->get_order_collection_method(),
                 'address' => $this->get_order_address(),
                 'postcode' => $this->get_order_postcode(),
                 'items' => array_map(function($item) {
