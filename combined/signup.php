@@ -59,12 +59,14 @@
 			}
 
 			$data = [];
-            $check = true;
 			foreach ($acc_data["accounts"] as $id) {
 				if ($id["email"] == $email) {
                     echo "<p>$email already exists and can not be used.</p>";
                     $check = false;
 				}
+                else {
+                    $check = true;
+                }
 			}
             if ($check == true) {
                 $file = 'accountinfo.json';
