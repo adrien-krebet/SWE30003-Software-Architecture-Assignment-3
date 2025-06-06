@@ -16,7 +16,7 @@
         function get_type() { return $this->type; }
         function create_account_session($account_id, $access_level) {
             $_SESSION['account_id'] = $account_id;
-            $_SESSION['access_level'] = $access_level;
+            $_SESSION['type'] = $access_level;
         }//make actual function here
         function remove_account_session($account_id) {return "1";}//Not sure if we need one
     }
