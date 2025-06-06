@@ -1,0 +1,31 @@
+{
+  "orders": [
+    {
+      "orderID": "0001",
+      "userID": "0001",
+      "orderStatus": "Complete",
+      "items": [
+        { "name": "airpods", "quantity": "200" },
+        { "name": "monitor", "quantity": "500" }
+      ]
+    },
+    {
+      "orderID": "0002",
+      "userID": "0002",
+      "orderStatus": "In progress",
+      "items": [
+        { "name": "adapters", "quantity": "100" },
+        { "name": "tv", "quantity": "100000" }
+      ]
+    },
+    {
+      "orderID": "0003",
+      "userID": "0001",
+      "orderStatus": "Complete",
+      "items": [
+        { "name": "airpods", "quantity": "200" },
+        { "name": "monitor", "quantity": "500" }
+      ]
+    },
+  ]
+}
