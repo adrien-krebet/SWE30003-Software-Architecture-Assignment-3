@@ -38,11 +38,8 @@ class AccountManager {
         return null;
     }
 
- 
-
     /**
      * Generate a unique user ID.
-     * @return string
      */
     function generateUserID() {
         return "U_" . str_pad(rand(0, 9999), 4, "0", STR_PAD_LEFT);
