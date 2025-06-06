@@ -1,0 +1,25 @@
+	{
+	"accounts": [
+	  {
+		"userid":"0001", 
+		"aname":"Joel", 
+		"email":"cave@horse.com.au", 
+		"password":"CAVEHORSE", 
+		"type":1
+	  },
+	  {
+		"userid":"0002", 
+		"aname":"Adrien", 
+		"email":"cooking@contest.com.au", 
+		"password":"joker", 
+		"type":2
+	  },
+	  {
+		"userid":"0003", 
+		"aname":"Jordyn", 
+		"email":"ALLMIGHTY@mha.com.au", 
+		"password":"Izuku", 
+		"type":3
+	  }
+    ]  
+}
