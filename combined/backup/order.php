@@ -62,32 +62,6 @@
         }
         function create_order(){//maybe remove CART AND PAYMENT OBJECTS HERE?????????????????????????????
             //echo "create_order() called<br>";
-
-            $order_cart = $this->get_order_items();
-            $order_items = $order_cart->get_products();
-            var_dump($order_cart);
-
-            $jsonString = file_get_contents('stock_record.json');
-            $data = json_decode($jsonString, true);
-            foreach ($order_items as $item) {
-                $item_id = $item->get_item_id();
-                $purchase_quantity = $item->get_item_purchase_quantity();
-                foreach ($data as $key => $entry) {
-                    if ($entry['id'] == $item_id) {
-                        $remaining_quantity = $data[$key]['remaining_quantity'];
-                        //echo "$remaining_quantity<br>";
-                        $new_quantity = $remaining_quantity - $purchase_quantity;
-                        $data[$key]['remaining_quantity'] = $new_quantity;
-                    }
-                }
-            }
-
-            $newJsonString = json_encode($data);
-            file_put_contents('stock_record.json', $newJsonString);
-
-
-
-
             $file = 'order_record.json';
             $json = json_decode(file_get_contents($file), true) ?? ['orders' => []];
 
@@ -101,8 +75,6 @@
                 'userID' => $this->get_order_account_id(),
                 // change this between whatever
                 'orderStatus' => "Being Processed",
-                'address' => $this->get_order_address(),
-                'postcode' => $this->get_order_postcode(),
                 'items' => array_map(function($item) {
                     return [
                         'name' => $item->get_item_name(),

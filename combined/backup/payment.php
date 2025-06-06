@@ -10,7 +10,7 @@
 
 <body>
     <nav>
-
+        
         <a href="index.html">Home Page:</a>
         <a href="payment.php">Temp way to payment:</a>
         <a href="cavehorse.html">CAVEHORSECAVEHORSECAVEHORSE:</a>
@@ -29,7 +29,7 @@
 
         $cart = $_SESSION['cart'];
 
-        $invoice = $cart->get_invoice();//NEEEEEDS FIXING
+        $invoice = $cart->get_invoice();
         echo "<h1>Payment Page</h1>";
         echo "<p>Please give us $$invoice of your money.</p>";
     ?>
@@ -67,7 +67,7 @@
     </section>
     <?php
     if ($_SERVER["REQUEST_METHOD"] === "POST" && !empty($_POST["card"])) {
-
+        
         class Payment extends Sequence_check {
             public $card_number, $card_expiry, $CSV, $collection_method, $contact_details, $address, $postcode;
 
@@ -87,14 +87,14 @@
             function get_address() { return $this->address; }
             function get_postcode() { return $this->postcode; }
 
-            public function verify_data($data_input) {
+            function verify_data($data_input) {
                 if (strlen($this->card_number) < 15 || strlen($this->card_number) > 16) {
                     return "Card number must be 15-16 digits.";
                 }
                 return "";
             }
         }
-
+        
         $payment = new Payment();
         $payment->set_card_number($_POST["card"]);
         $payment->set_card_expiry($_POST["expiery_date"]);
@@ -113,28 +113,21 @@
             echo "CSV: " . $payment->get_CSV() . "<br>";
             echo "Collection: " . $payment->get_collection_method() . "<br>";
             echo "Address: " . $payment->get_address() . "<br>";
-            echo "Postcode: " . $payment->get_postcode() . "<br>";*/
+            echo "Postcode: " . $payment->get_postcode() . "<br>";*/ 
 
             // UNCOMMENT ABOVE IF NEEDED
 
             $order = new Order();
             $account = $cart->get_account_id();
             $collection_method = $payment->get_collection_method();
-            if ($collection_method == "delivery") {
-                $shipping_address = $payment->get_address();
-                $postcode = $payment->get_postcode();
-            }
-            else {
-                $shipping_address = "NA";
-                $postcode = "NA";
-            }
+            $shipping_address = $payment->get_address();
+            $postcode = $payment->get_postcode();
             $contact = $payment->get_contact_details();
 
             // im not sure whether we wanna use the collection method to determine whether we ask for address or not but eh outside of scope maybe
 
             // fixed typo :)
-            $order_proccess_check = $order->verify_data(true);
-            if ($order_proccess_check === "") {
+            if ($order->verify_data(true) === "") {
                 $order->set_order_account_id($account);
                 $order->set_order_items($cart);
                 $order->set_order_collection_method($collection_method);
@@ -155,7 +148,7 @@
                 unset($_SESSION['cart']);
                 // idk if we wanna mess with the stock record
             } else {
-                echo "<p>$order_proccess_check</p>";
+                echo "<p>Order validation failed.</p>";
             }
         } else {
             echo "<p>Error: $error</p>";
