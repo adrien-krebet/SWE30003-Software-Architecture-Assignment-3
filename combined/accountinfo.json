@@ -1,0 +1,25 @@
+{
+    "accounts": [
+        {
+            "userid": "0001",
+            "aname": "Aiden",
+            "email": "Aiden@Aiden.com",
+            "password": "A",
+            "type": 1
+        },
+        {
+            "userid": "0002",
+            "aname": "Jordyn",
+            "email": "Jordyn@chirny.com",
+            "password": "c",
+            "type": 1
+        },
+        {
+            "userid": "0003",
+            "aname": "Joel",
+            "email": "Joel@.com",
+            "password": "j",
+            "type": 1
+        }
+    ]
+}
