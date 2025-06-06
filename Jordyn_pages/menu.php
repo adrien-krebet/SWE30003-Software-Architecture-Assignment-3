@@ -60,13 +60,22 @@
 			
 			//update account details
 			if (isset($_POST["update"])) {
-				$upname = $_POST["name"];
-				$upemail = $_POST["email"];
-				$uppswd = $_POST["password"];
-				if($m->changeUserDetails($upname, $upemail, $uppswd)) {
-					echo ("Data has been successfully changed");
+				if (strlen($_POST["name"]) != 0 && strlen($_POST["email"]) != 0 && strlen($_POST["password"]) != 0) {
+					$upname = $_POST["name"];
+					$upemail = $_POST["email"];
+					$uppswd = $_POST["password"];
+					$pattern = "/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,})$/i";
+					if(preg_match($pattern, $upemail) == 1) {
+						if($m->changeUserDetails($upname, $upemail, $uppswd)) {
+							echo ("Data has been successfully changed");
+						} else {
+							echo ("An Error has occurred while updating your data");
+						}
+					} else {
+						echo ("Please enter a valid email address, ie. blank@gmail.com");
+					}
 				} else {
-					echo ("An Error has occurred while updating your data");
+					echo ("Fields cannot be empty, please only change what you want to update");
 				}
 			}
 			
