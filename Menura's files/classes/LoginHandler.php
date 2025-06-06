@@ -14,11 +14,7 @@ class LoginHandler {
 
     /**
      * Processes login based on provided email and password.
-     * If valid, stores user session and redirects.
-     *
-     * @param string $email
-     * @param string $password
-     * @return bool
+     * If valid, stores user session and redirects
      */
     public function processLogin(string $email, string $password): bool {
         $user = $this->manager->findByEmail($email);
