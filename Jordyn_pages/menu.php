@@ -2,13 +2,13 @@
 	if(!session_id()) {
 		session_start();
 	}
-	$_SESSION["accID"] = "0002";
-	$_SESSION["type"] = "0001";
+	$_SESSION["accID"] = "0003";
+	$_SESSION["type"] = "3";
 	if (!isset ($_SESSION["accID"])) {
 		$_SESSION["accID"] = "0002";
 	}
 	if (!isset ($_SESSION["type"])) { 
-		$_SESSION["type"] = "0002";
+		$_SESSION["type"] = "2";
 	}
 ?>
 
@@ -24,39 +24,28 @@
 		<?php
 			require_once("accountinfo.php");
 			$m = new Menu();
-			
-			//retrieve account details based on json file
-			$acc = file_get_contents("testaccountinfo.json");
-			
-			//Check if file was read
-			if ($acc === false) {
-				die("Error when reading the JSON file");
+			$data = $m->getUserDetails($_SESSION["accID"]);
+			if($_SESSION["type"] == 1) {
+				$t = "customer";
+			} elseif ($_SESSION["type"] == 2) {
+				$t = "Shipper";
+			} elseif ($_SESSION["type"] == 3) {
+				$t = "Admin";
 			}
 			
-			// Decode the JSON file
-			$acc_data = json_decode($acc, true);
-			
-			//Check if JSOn was decoded successfully
-			if ($acc_data === null) {
-				die("Error decodnig the JSON file");
-			}
-			
-			$data = [];
-			foreach ($acc_data["accounts"] as $id) {
-				if ($id["userid"] == $_SESSION["accID"]) {
-					$data["name"] = $id["aname"];
-					$name = $id["aname"];
-					$data["email"] = $id["email"];
-					$data["password"] = $id["password"];
-				}
-			}
 			//Intro and button for changing data
-			echo("<p>Hello " . $name . ".</p>");
+			echo("<p>Hello " . $data["name"] . ".</p>");
+			echo("<p>This account type is " . $t . ".");
 			
 			if (!isset($_POST["submit"])) {
 				echo ('<form action = "menu.php" method = "POST">
 				<input type = "submit" name = "submit" value = "Change Account Details">
 				</form>');
+				if($_SESSION["type"] == 2) {
+					echo ('<form action = "menu.php" method = "POST">
+					<input type = "submit" name = "change" value = "Update Order status">
+					</form>');
+				}
 			} else {
 				//find relevant json info
 				//Form code taken and altered from Digital FOX https://www.youtube.com/watch?v=TMAwyq14FUI -> 6:03
@@ -69,7 +58,7 @@
 				echo ('<p><input type = "submit" name = "back" value = "Go Back"></p></form>');
 			}
 			
-			//
+			//update account details
 			if (isset($_POST["update"])) {
 				$upname = $_POST["name"];
 				$upemail = $_POST["email"];
@@ -81,12 +70,34 @@
 				}
 			}
 			
+			//update order status
+			if (isset($_POST["change"])) {
+				echo ('<form action = "menu.php" method = "POST">
+					<label>Order ID:</label> 
+					<input type = "text" name = "id">
+					<select id = "status" name = "status">
+						<option value = "Pending">Pending</option>
+						<option value = "In progress">In progress</option>
+						<option value = "Complete">Complete</option>
+					</select>
+					<input type = "submit" name = "ustatus" value = "Update">
+					</form>');
+			} elseif (isset($_POST["ustatus"])) {
+				$search_id = $_POST["id"];
+				$new_status = $_POST["status"];
+				if($m->changeOrderDetails($search_id, $new_status)) {
+					echo ("Order has been successfully changed");
+				} else {
+					echo ("An Error has occurred while updating an order");
+				}
+			}
+			
 			if (!isset($_POST["view"])) {
 				echo ('<form action = "menu.php" method = "POST">
 				<input type = "submit" name = "view" value = "View Order Details">
 				</form>');
 			} else {
-				$m->retrieveOrders();
+				$m->showOrders();
 			}
 		?>
 		<p><a href="destroy.php">Restart session</a></p>

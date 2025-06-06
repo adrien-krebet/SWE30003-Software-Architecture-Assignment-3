@@ -14,39 +14,30 @@
 			
 			$this->account_id = $_SESSION["accID"];
 			$this->account_type = $_SESSION["type"];
-			//echo $this->account_id;
-			//echo $this->account_type;
 		}
 		
-		function retrieveOrders() {
-			//retrieve order details based on json file
-			$or = file_get_contents("exampleOrder.json");
-			
-			//Check if file was read
-			if ($or === false) {
-				die("Error when reading the JSON file");
-			}
-			
-			// Decode the JSON file
-			$or_data = json_decode($or, true);
-			
-			//Check if JSOn was decoded successfully
-			if ($or_data === null) {
-				die("Error decoding the JSON file");
-			}
-			
-			$data = [];
-			foreach ($or_data["orders"] as $id) {
-				if ($id["userID"] == $_SESSION["accID"]) {
-					$data[] = $id;
-				}
-			}
-			
+		function showOrders() {
+			//all variables
+			$ro = New orderformat();
+			$data = $ro->retrieveOrders();
 			$new_order = [];
-			$name = "";
+			$oname = "";
 			$quant = "";
+			
+			//start of table
 			echo "<p><table width = '100%' border = '1'>";
-			echo "<tr><th>Order_ID</th><th>Item Name</th><th>Item Quantity</th><th>Order Status</th></tr>";
+			if($this->account_type == 1) {
+				$table = $this->customerLayout();
+			} elseif ($this->account_type == 2) {
+				$table = $this->shipperLayout();
+			} elseif ($this->account_type == 3) {
+				$table = $this->adminLayout();
+			} else {
+				$table = "Error with table.";
+			}
+			echo $table;
+			
+			//removing data from an array
 			for($i = 0; $i < count($data); $i++) {
 				//print_r($data[$i]);
 				$order = $data[$i];
@@ -60,21 +51,79 @@
 				$address = $new_order[4];
 				$postcode = $new_order[5];
 				$items = $new_order[6];
-				//print_r ($items);
-				echo "<tr><td>{$id}</td>";
-				foreach($items as $key=>$stock) {
-					$name .= " " . $stock["name"];
-					$quant .= " " . $stock["quantity"];
-				}
-				echo "<td>{$name}</td>";
-				echo "<td>{$quant}</td>";
-				echo "<td>{$status}</td></tr>";
 				
+				//getting specific items and appending
+				foreach($items as $key=>$stock) {
+					$oname .= $stock["name"] . "<br>";
+					$quant .= $stock["quantity"] . "<br>";
+				}
+				
+				//layout of table
+				if($this->account_type == 1) {
+					$msg = $this->customerTable($id, $oname, $quant, $status);
+				} elseif ($this->account_type == 2) {
+					$msg = $this->shipperTable($id, $oname, $quant, $collection, $address, $postcode, $status);
+				} elseif ($this->account_type == 3) {
+					$msg = $this->adminTable($user, $id, $oname, $quant, $collection, $address, $postcode, $status);
+				} else {
+					$msg = "Error with table rows.";
+				}
+				echo $msg;
+				
+				//reset variables for new data
 				array_splice($new_order, 0, count($new_order));
-				$name = " ";
+				$oname = " ";
 				$quant = " ";
 			}
 			echo "</table></p>";
+		}
+		
+		function changeOrderDetails($search_id, $new_status) {
+			//code inspired (and changed) by https://stackoverflow.com/questions/17806224/how-to-update-edit-a-json-file-using-php
+			$json = file_get_contents("exampleOrder.json");
+			$json_data = json_decode($json, true);
+			foreach($json_data["orders"] as &$record) {
+				if($record["orderID"] === $search_id) {
+					$record["orderStatus"] = $new_status;
+				}
+			}
+			$new_json_data = json_encode($json_data, JSON_PRETTY_PRINT);
+			file_put_contents("exampleOrder.json", $new_json_data);
+			if(empty($new_json_data)) {
+				return false;
+			} else {
+				return true;
+			}
+		}
+		
+		function getUserDetails($user) {
+			//retrieve account details based on json file
+			$acc = file_get_contents("testaccountinfo.json");
+			
+			//Check if file was read
+			if ($acc === false) {
+				die("Error when reading the JSON file");
+			}
+			
+			//Decode the JSON file
+			$acc_data = json_decode($acc, true);
+			
+			//Check if JSOn was decoded successfully
+			if ($acc_data === null) {
+				die("Error decodnig the JSON file");
+			}
+			
+			//Get all account details
+			$data = [];
+			foreach ($acc_data["accounts"] as $id) {
+				if ($id["userid"] == $user) {
+					$data["name"] = $id["aname"];
+					$name = $id["aname"];
+					$data["email"] = $id["email"];
+					$data["password"] = $id["password"];
+				}
+			}
+			return $data;
 		}
 		
 		function changeUserDetails($name, $email, $pswd) {
@@ -99,27 +148,47 @@
 		}
 		
 		function customerLayout() {
-			if($this->account_type = 1) {
-				return "customer";
-			} else {
-				return false;
-			}
+			return "<tr><th>Order_ID</th><th>Item Name</th><th>Item Quantity</th><th>Order Status</th></tr>";
+		}
+		
+		function customerTable($id, $oname, $quant, $status) {
+			return "<tr><td>{$id}</td>
+				<td>{$oname}</td>
+				<td>{$quant}</td>
+				<td>{$status}</td></tr>";
 		}
 		
 		function shipperLayout() {
-			if($this->account_type = 2) {
-				return "shipper";
-			} else {
-				return false;
-			}
+			return "<tr><th>Order_ID</th><th>Item Name</th><th>Item Quantity</th><th>Collection Type</th><th>Address</th><th>Postcode</th><th>Order Status</th></tr>";
+		}
+		
+		function shipperTable($id, $oname, $quant, $collection, $address, $postcode, $status) {
+			return "<tr><td>{$id}</td>
+				<td>{$oname}</td>
+				<td>{$quant}</td>
+				<td>{$collection}</td>
+				<td>{$address}</td>
+				<td>{$postcode}</td>
+				<td>{$status}</td>
+				</tr>";
 		}
 		
 		function adminLayout() {
-			if($this->account_type = 3) {
-				return "admin";
-			} else {
-				return false;
-			}
+			return "<tr><th>Username</th><th>User_ID</th><th>Order_ID</th><th>Item Name</th><th>Item Quantity</th><th>Collection Type</th><th>Address</th><th>Postcode</th><th>Order Status</th></tr>";
+		}
+		
+		function adminTable($user, $id, $oname, $quant, $collection, $address, $postcode, $status) {
+			$u_id = $this->getUserDetails($user);
+			return "<tr>
+				<td>{$u_id['name']}</td>
+				<td>{$user}</td>
+				<td>{$id}</td>
+				<td>{$oname}</td>
+				<td>{$quant}</td>
+				<td>{$collection}</td>
+				<td>{$address}</td>
+				<td>{$postcode}</td>
+				<td>{$status}</td></tr>";
 		}
 	}
 ?>
