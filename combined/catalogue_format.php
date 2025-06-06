@@ -9,10 +9,12 @@
         // from format.php for access levels, https://www.w3schools.com/php/php_oop_interfaces.asp
         class CatalogueFormat implements InfoFormat {
             private $products;
+            private $statistics = null;
             
             // setup the product array
-            public function setProducts($products) {
+            public function setProducts($products, $statistics = null) {
                 $this->products = $products;
+                $this->statistics = $statistics;
             }
 
             // logic for cusotmer view (default)
@@ -44,8 +46,14 @@
                 foreach ($this->products as $item) {
                     // disable add to cart if a admin <-- TEMPORARY ADD SPECIFIC STUFF FOR REORDERING
                     $html .= $this->renderItem($item, false); 
-                    // put stats stuff here
-                    $html .= "<p><em>Stats: WIP!!!</em></p>";
+                    // stats stuff
+                    if ($this->statistics !== null) {
+                        $name = $item->get_item_name();
+                        $purchases = $this->statistics->get_item_purchases($name);
+                        $html .= "<p><strong>Total Purchased:</strong> $purchases</p>";
+                    } else {
+                        $html .= "<p><em>Statistics: unavailable</em></p>";
+                    }
                 }
                 return $html;
             }
