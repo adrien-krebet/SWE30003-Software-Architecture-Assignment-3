@@ -1,11 +1,11 @@
 {
     "hello@gmail.com": {
-        "email": "hello@gmail.com",
-        "password": "Hello@12"
+        "email": "menura@gmail.com",
+        "password": "Menura@123"
     },
     "bro@gmail.com": {
-        "email": "bro@gmail.com",
-        "password": "Hel@123",
+        "email": "adrien@gmail.com",
+        "password": "Adr@123",
         "accessLevel":true
     }
 }
