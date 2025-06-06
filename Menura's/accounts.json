@@ -1,0 +1,24 @@
+{
+    "hello@gmail.com": {
+        "email": "menura@gmail.com",
+        "password": "Menura@123"
+    },
+    "bro@gmail.com": {
+        "email": "adrien@gmail.com",
+        "password": "Adr@123",
+        "accessLevel": true
+    },
+    "menura1@gmail.com": {
+        "email": "menura1@gmail.com",
+        "password": "Menuraa@123"
+    },
+    "menura@gmail.com": {
+        "email": "menura@gmail.com",
+        "password": "Hello@123"
+    },
+    "0": {
+        "email": "pro@gmail.com",
+        "password": "Pro@123",
+        "access": "customer"
+    }
+}
