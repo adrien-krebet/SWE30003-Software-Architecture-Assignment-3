@@ -80,19 +80,23 @@
 		
 		function changeOrderDetails($search_id, $new_status) {
 			//code inspired (and changed) by https://stackoverflow.com/questions/17806224/how-to-update-edit-a-json-file-using-php
-			$json = file_get_contents("exampleOrder.json");
-			$json_data = json_decode($json, true);
-			foreach($json_data["orders"] as &$record) {
-				if($record["orderID"] === $search_id) {
-					$record["orderStatus"] = $new_status;
+			if (strlen($search_id) != 0) {
+				$json = file_get_contents("exampleOrder.json");
+				$json_data = json_decode($json, true);
+				foreach($json_data["orders"] as &$record) {
+					if($record["orderID"] === $search_id) {
+						$record["orderStatus"] = $new_status;
+					}
 				}
-			}
-			$new_json_data = json_encode($json_data, JSON_PRETTY_PRINT);
-			file_put_contents("exampleOrder.json", $new_json_data);
-			if(empty($new_json_data)) {
-				return false;
+				$new_json_data = json_encode($json_data, JSON_PRETTY_PRINT);
+				file_put_contents("exampleOrder.json", $new_json_data);
+				if(empty($new_json_data)) {
+					return false;
+				} else {
+					return true;
+				}
 			} else {
-				return true;
+				return false;
 			}
 		}
 		
