@@ -98,7 +98,7 @@
                 $account_info->set_email($email);
                 $account_info->set_password($password);
                 $account_info->set_type($access_level);
-                $account_info->create_account_session($account_id, $access_level);
+                $account_info->create_account_session($account_id, $access_level, $account_name);
 
 
                 //asign vairables to account class and then create accountid session

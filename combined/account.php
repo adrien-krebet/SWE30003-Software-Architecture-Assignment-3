@@ -14,9 +14,11 @@
         function get_email() { return $this->email; }
         function get_password() { return $this->password; }
         function get_type() { return $this->type; }
-        function create_account_session($account_id, $access_level) {
+        function create_account_session($account_id, $access_level, $account_name) {
             $_SESSION['account_id'] = $account_id;
             $_SESSION['type'] = $access_level;
+            $_SESSION['account_name'] = $account_name;
+
         }//make actual function here
         function remove_account_session($account_id) {return "1";}//Not sure if we need one
     }

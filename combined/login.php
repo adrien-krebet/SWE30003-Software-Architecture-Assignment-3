@@ -86,7 +86,7 @@
                     $account_info->set_email($email);
                     $account_info->set_password($password);
                     $account_info->set_type($type);
-                    $account_info->create_account_session($userid, $type);
+                    $account_info->create_account_session($userid, $type, $aname);
                     header("Location: index.html");
                     exit;
                 }
